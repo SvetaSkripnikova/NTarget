@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище NewTargetModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CloseItem">
+          <Key>
+            <PropertyRef Name="IdCloseItem" />
+          </Key>
+          <Property Name="IdCloseItem" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CloseDate" Type="datetime" Nullable="false" />
+          <Property Name="PerformanceSum" Type="float" Nullable="false" />
+          <Property Name="IdWorker" Type="int" Nullable="false" />
+          <Property Name="IdServiceItem" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiceItem">
+          <Key>
+            <PropertyRef Name="IdServiceItem" />
+          </Key>
+          <Property Name="IdServiceItem" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameServiceItem" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartSate" Type="datetime" Nullable="false" />
+          <Property Name="FinishDate" Type="datetime" Nullable="false" />
+          <Property Name="Coun" Type="int" Nullable="false" />
+          <Property Name="Price" Type="float" Nullable="false" />
+          <Property Name="Total" Type="float" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="IdSpecification" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Specification">
+          <Key>
+            <PropertyRef Name="IdSpecification" />
+          </Key>
+          <Property Name="IdSpecification" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameSpecification" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Worker">
+          <Key>
+            <PropertyRef Name="IdWorker" />
+          </Key>
+          <Property Name="IdWorker" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameWorker" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Kvol" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Coef" Type="float" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CL_SI">
+          <End Role="ServiceItem" Type="Self.ServiceItem" Multiplicity="1" />
+          <End Role="CloseItem" Type="Self.CloseItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceItem">
+              <PropertyRef Name="IdServiceItem" />
+            </Principal>
+            <Dependent Role="CloseItem">
+              <PropertyRef Name="IdServiceItem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CL_W">
+          <End Role="Worker" Type="Self.Worker" Multiplicity="1" />
+          <End Role="CloseItem" Type="Self.CloseItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Worker">
+              <PropertyRef Name="IdWorker" />
+            </Principal>
+            <Dependent Role="CloseItem">
+              <PropertyRef Name="IdWorker" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SI_S">
+          <End Role="Specification" Type="Self.Specification" Multiplicity="1" />
+          <End Role="ServiceItem" Type="Self.ServiceItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specification">
+              <PropertyRef Name="IdSpecification" />
+            </Principal>
+            <Dependent Role="ServiceItem">
+              <PropertyRef Name="IdSpecification" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище NewTargetModelContainer">
+          <EntitySet Name="CloseItem" EntityType="Self.CloseItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceItem" EntityType="Self.ServiceItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Specification" EntityType="Self.Specification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Worker" EntityType="Self.Worker" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CL_SI" Association="Self.FK_CL_SI">
+            <End Role="ServiceItem" EntitySet="ServiceItem" />
+            <End Role="CloseItem" EntitySet="CloseItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CL_W" Association="Self.FK_CL_W">
+            <End Role="Worker" EntitySet="Worker" />
+            <End Role="CloseItem" EntitySet="CloseItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SI_S" Association="Self.FK_SI_S">
+            <End Role="Specification" EntitySet="Specification" />
+            <End Role="ServiceItem" EntitySet="ServiceItem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NewTargetModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CloseItem">
+          <Key>
+            <PropertyRef Name="IdCloseItem" />
+          </Key>
+          <Property Name="IdCloseItem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CloseDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PerformanceSum" Type="Double" Nullable="false" />
+          <Property Name="IdWorker" Type="Int32" Nullable="false" />
+          <Property Name="IdServiceItem" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ServiceItem" Relationship="Self.FK_CL_SI" FromRole="CloseItem" ToRole="ServiceItem" />
+          <NavigationProperty Name="Worker" Relationship="Self.FK_CL_W" FromRole="CloseItem" ToRole="Worker" />
+        </EntityType>
+        <EntityType Name="ServiceItem">
+          <Key>
+            <PropertyRef Name="IdServiceItem" />
+          </Key>
+          <Property Name="IdServiceItem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameServiceItem" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartSate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FinishDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Coun" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Double" Nullable="false" />
+          <Property Name="Total" Type="Double" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="IdSpecification" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CloseItem" Relationship="Self.FK_CL_SI" FromRole="ServiceItem" ToRole="CloseItem" />
+          <NavigationProperty Name="Specification" Relationship="Self.FK_SI_S" FromRole="ServiceItem" ToRole="Specification" />
+        </EntityType>
+        <EntityType Name="Specification">
+          <Key>
+            <PropertyRef Name="IdSpecification" />
+          </Key>
+          <Property Name="IdSpecification" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameSpecification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ServiceItem" Relationship="Self.FK_SI_S" FromRole="Specification" ToRole="ServiceItem" />
+        </EntityType>
+        <EntityType Name="Worker">
+          <Key>
+            <PropertyRef Name="IdWorker" />
+          </Key>
+          <Property Name="IdWorker" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameWorker" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Kvol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Coef" Type="Double" Nullable="false" />
+          <NavigationProperty Name="CloseItem" Relationship="Self.FK_CL_W" FromRole="Worker" ToRole="CloseItem" />
+        </EntityType>
+        <Association Name="FK_CL_SI">
+          <End Role="ServiceItem" Type="Self.ServiceItem" Multiplicity="1" />
+          <End Role="CloseItem" Type="Self.CloseItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceItem">
+              <PropertyRef Name="IdServiceItem" />
+            </Principal>
+            <Dependent Role="CloseItem">
+              <PropertyRef Name="IdServiceItem" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CL_W">
+          <End Role="Worker" Type="Self.Worker" Multiplicity="1" />
+          <End Role="CloseItem" Type="Self.CloseItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Worker">
+              <PropertyRef Name="IdWorker" />
+            </Principal>
+            <Dependent Role="CloseItem">
+              <PropertyRef Name="IdWorker" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SI_S">
+          <End Role="Specification" Type="Self.Specification" Multiplicity="1" />
+          <End Role="ServiceItem" Type="Self.ServiceItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specification">
+              <PropertyRef Name="IdSpecification" />
+            </Principal>
+            <Dependent Role="ServiceItem">
+              <PropertyRef Name="IdSpecification" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NewTargetEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CloseItem" EntityType="Self.CloseItem" />
+          <EntitySet Name="ServiceItem" EntityType="Self.ServiceItem" />
+          <EntitySet Name="Specification" EntityType="Self.Specification" />
+          <EntitySet Name="Worker" EntityType="Self.Worker" />
+          <AssociationSet Name="FK_CL_SI" Association="Self.FK_CL_SI">
+            <End Role="ServiceItem" EntitySet="ServiceItem" />
+            <End Role="CloseItem" EntitySet="CloseItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CL_W" Association="Self.FK_CL_W">
+            <End Role="Worker" EntitySet="Worker" />
+            <End Role="CloseItem" EntitySet="CloseItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SI_S" Association="Self.FK_SI_S">
+            <End Role="Specification" EntitySet="Specification" />
+            <End Role="ServiceItem" EntitySet="ServiceItem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище NewTargetModelContainer" CdmEntityContainer="NewTargetEntities">
+          <EntitySetMapping Name="CloseItem">
+            <EntityTypeMapping TypeName="NewTargetModel.CloseItem">
+              <MappingFragment StoreEntitySet="CloseItem">
+                <ScalarProperty Name="IdCloseItem" ColumnName="IdCloseItem" />
+                <ScalarProperty Name="CloseDate" ColumnName="CloseDate" />
+                <ScalarProperty Name="PerformanceSum" ColumnName="PerformanceSum" />
+                <ScalarProperty Name="IdWorker" ColumnName="IdWorker" />
+                <ScalarProperty Name="IdServiceItem" ColumnName="IdServiceItem" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceItem">
+            <EntityTypeMapping TypeName="NewTargetModel.ServiceItem">
+              <MappingFragment StoreEntitySet="ServiceItem">
+                <ScalarProperty Name="IdServiceItem" ColumnName="IdServiceItem" />
+                <ScalarProperty Name="NameServiceItem" ColumnName="NameServiceItem" />
+                <ScalarProperty Name="StartSate" ColumnName="StartSate" />
+                <ScalarProperty Name="FinishDate" ColumnName="FinishDate" />
+                <ScalarProperty Name="Coun" ColumnName="Coun" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="IdSpecification" ColumnName="IdSpecification" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Specification">
+            <EntityTypeMapping TypeName="NewTargetModel.Specification">
+              <MappingFragment StoreEntitySet="Specification">
+                <ScalarProperty Name="IdSpecification" ColumnName="IdSpecification" />
+                <ScalarProperty Name="NameSpecification" ColumnName="NameSpecification" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Worker">
+            <EntityTypeMapping TypeName="NewTargetModel.Worker">
+              <MappingFragment StoreEntitySet="Worker">
+                <ScalarProperty Name="IdWorker" ColumnName="IdWorker" />
+                <ScalarProperty Name="NameWorker" ColumnName="NameWorker" />
+                <ScalarProperty Name="Kvol" ColumnName="Kvol" />
+                <ScalarProperty Name="Coef" ColumnName="Coef" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
